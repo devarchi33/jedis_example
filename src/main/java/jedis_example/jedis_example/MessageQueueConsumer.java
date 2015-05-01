@@ -11,10 +11,10 @@ public class MessageQueueConsumer {
 		List<String> messages = null;
 		while (true) {
 			System.out.println("wating for message in the queue");
-			messages = jedis.blpop(0, "queue");
+			messages = jedis.blpop(5, "queue");
 			System.out.println("got the messsage!!");
-			System.out.println("key : " + messages.get(0) + "value : "
-					+ messages.get(1));
+			System.out.println("key : " + messages.get(0));
+			System.out.println("value : " + messages.get(1));
 			String payLoad = messages.get(1);
 			System.out.println("Message received : " + payLoad);
 			jedis.close();
