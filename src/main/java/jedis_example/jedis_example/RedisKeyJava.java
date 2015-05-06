@@ -10,7 +10,7 @@ public class RedisKeyJava {
 	public static void main(String[] args) {
 		try {
 			// Connecting to Redis server on 192.168.0.81
-			Jedis jedis = new Jedis("192.168.0.81");
+			Jedis jedis = new Jedis("192.168.0.20");
 			System.out.println("Connection to server sucessfully");
 			// store data in redis list
 			// Get the stored data and print it

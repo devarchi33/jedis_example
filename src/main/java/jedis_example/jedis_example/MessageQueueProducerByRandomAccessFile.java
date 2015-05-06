@@ -9,11 +9,11 @@ import redis.clients.jedis.Jedis;
 public class MessageQueueProducerByRandomAccessFile {
 
 	public static void main(String[] args) {
-		Jedis jedis = new Jedis("192.168.0.81");
+		Jedis jedis = new Jedis("192.168.0.20");
 
 		try {
 			// 읽어들일 사이즈.
-			int seekSize = 5;
+			int seekSize = 1024;
 
 			// 읽기 전용으로 파일을 읽음.
 			RandomAccessFile rdma = new RandomAccessFile(
@@ -26,7 +26,7 @@ public class MessageQueueProducerByRandomAccessFile {
 
 			byte[] data = null;
 
-			// 루프 사이즈 = 총길이/seekSize + (총길이%seekSize의 나머지가 0이면 0을 반환 아니면 1을 반환.
+			// 루프 사이즈 = 총길이/seekSize + (총길이%seekSize의 나머지가 0이면 0을 반환 아니면 1을 반환.)
 			long size = rdma.length() / seekSize
 					+ (rdma.length() % seekSize == 0 ? 0 : 1);
 
@@ -37,7 +37,11 @@ public class MessageQueueProducerByRandomAccessFile {
 				rdma.read(data); // 현 포인터 위치에서 부터 인자로 받은 바이트 배열의 길이 만큼 읽어 들임.
 
 				// byte data 를 문자열로 변환(trim()을 사용하여 공백제거.)
-				jedis.rpush("queue", new String(data).trim());
+//				jedis.rpush("log", new String(data).trim());
+				
+				//byte배열로 전송기능 추가.
+				byte[] key = {'l','o','g'};
+				jedis.rpush(key, data);
 
 				jedis.close();
 			}
